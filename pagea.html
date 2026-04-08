@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Web Box - Pentest Configurator | Security Assessment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        html {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #333;
+            width: 100%;
+            transition: transform 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            header.header-hidden {
+                transform: translateY(-100%);
+            }
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #fff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: #ffffff;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 20px;
+            }
+            .nav-links a {
+                font-size: 12px;
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 35vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            top: -200px;
+            right: -200px;
+            animation: float 15s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, 30px); }
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 10;
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+            color: #fff;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #b0b0b0;
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease 0.2s backwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Config Container - Simplified */
+        .config-container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 45px 40px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #141414 100%);
+            border: 1px solid #333;
+            border-radius: 28px;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6);
+        }
+
+        .config-section {
+            margin-bottom: 35px;
+        }
+
+        .config-section:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .section-label {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-left: 3px solid #ffffff;
+            padding-left: 15px;
+        }
+
+        /* Input Groups */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            font-size: 15px;
+            color: #dddddd;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px 18px;
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 14px;
+            color: #e0e0e0;
+            font-family: inherit;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #ffffff;
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+        }
+
+        .input-group input::placeholder {
+            color: #555;
+        }
+
+        /* Textarea */
+        .specific-textarea {
+            width: 100%;
+            padding: 15px 18px;
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 14px;
+            color: #e0e0e0;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+            transition: all 0.3s;
+            margin-top: 5px;
+        }
+
+        .specific-textarea:focus {
+            outline: none;
+            border-color: #ffffff;
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: transparent;
+            border: 2px solid #ffffff;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 14px;
+            margin-top: 35px;
+        }
+
+        .submit-btn:hover {
+            background: #ffffff;
+            color: #0a0a0a;
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+        }
+
+        /* Contact Section */
+        #contact {
+            background-color: #0a0a0a;
+            text-align: center;
+            padding: 70px 20px;
+            scroll-margin-top: 70px;
+        }
+
+        .section-title {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: 2px;
+            position: relative;
+            color: #ffffff;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: #ffffff;
+            margin: 20px auto 0;
+        }
+
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-content p {
+            font-size: 18px;
+            color: #b0b0b0;
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        .contact-links {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            border: 2px solid #555;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s;
+            background-size: 28px;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .contact-link.email-icon {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23e0e0e0' viewBox='0 0 24 24'%3E%3Cpath d='M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z'/%3E%3C/svg%3E");
+        }
+        .contact-link.github-icon {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23e0e0e0' viewBox='0 0 24 24'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.49.5.09.68-.21.68-.48 0-.24-.01-.88-.01-1.72-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.33.85 0 1.7.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85 0 1.34-.01 2.42-.01 2.75 0 .27.18.58.69.48C19.13 20.17 22 16.42 22 12c0-5.52-4.48-10-10-10z'/%3E%3C/svg%3E");
+        }
+
+        .contact-link:hover {
+            border-color: #ffffff;
+            background-color: rgba(255,255,255,0.1);
+            transform: scale(1.08);
+        }
+
+        footer {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+            padding: 30px 20px;
+            text-align: center;
+            border-top: 1px solid #333;
+            color: #888;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            .config-container {
+                margin: 30px 20px;
+                padding: 30px 25px;
+            }
+            .section-title {
+                font-size: 32px;
+            }
+            .submit-btn {
+                font-size: 15px;
+                padding: 15px;
+            }
+        }
+
+        /* Optional info text */
+        .info-note {
+            font-size: 13px;
+            color: #777;
+            margin-top: 8px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <header id="mainHeader">
+        <nav>
+            <div class="logo">WEB BOX</div>
+            <ul class="nav-links">
+                <li><a id="homeNavBtn">Home</a></li>
+                <li><a id="contactNavBtn">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Pentest Configurator</h1>
+            <p>Define your target scope and specific requirements</p>
+        </div>
+    </section>
+
+    <div class="config-container">
+        <!-- IP Address / Domain & Subdomain Section -->
+        <div class="config-section">
+            <div class="section-label">Target Information</div>
+            <div class="input-group">
+                <label>IP Address or Domain</label>
+                <input type="text" id="ipDomain" placeholder="e.g., 192.168.1.1 / example.com / 10.0.0.0/24">
+            </div>
+            <div class="input-group">
+                <label>Subdomain or Subdomain IP Address</label>
+                <input type="text" id="subdomain" placeholder="e.g., api.example.com, admin.example.com or 10.0.0.5">
+            </div>
+        </div>
+
+        <!-- Specific Requirements -->
+        <div class="config-section">
+            <div class="section-label">Write Your Specific Requirements</div>
+            <textarea id="specificRequirements" class="specific-textarea" rows="5" placeholder="Example:&#10;• Need comprehensive web application pentest with OWASP Top 10 coverage&#10;• Social engineering simulation for employees&#10;• Compliance testing (HIPAA / PCI DSS)&#10;• API security assessment with authentication bypass tests&#10;• Internal network scanning and remediation roadmap"></textarea>
+        </div>
+
+        <button id="submitConfigBtn" class="submit-btn">SUBMIT CONFIGURATION →</button>
+    </div>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2 class="section-title">Get In Touch</h2>
+        <div class="contact-content">
+            <p>Ready to secure your infrastructure? Contact us for a consultation and let's discuss how we can help protect your organization.</p>
+            <div class="contact-links">
+                <a href="mailto:trenderwell@gmail.com" class="contact-link email-icon" title="Email"></a>
+                <a href="https://github.com/webboxpentester" class="contact-link github-icon" title="GitHub"></a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Web Box Pentester. All rights reserved. | Security through transparency.</p>
+    </footer>
+
+    <script>
+        // Submit button logic - sends email to trenderwell@gmail.com with all details including the link
+        const submitBtn = document.getElementById('submitConfigBtn');
+        
+        submitBtn.addEventListener('click', function() {
+            // Get form values
+            const ipDomain = document.getElementById('ipDomain').value.trim();
+            const subdomain = document.getElementById('subdomain').value.trim();
+            const specificReq = document.getElementById('specificRequirements').value.trim();
+            
+            // Validation (optional but user-friendly)
+            if (!ipDomain && !subdomain && !specificReq) {
+                if (confirm("No target information or requirements provided. Do you still want to submit an empty request?")) {
+                    // proceed
+                } else {
+                    return;
+                }
+            }
+            
+            const currentUrl = window.location.href;
+            const recipientEmail = "trenderwell@gmail.com";
+            const subject = `[Web Box] Pentest Configuration - New Request from ${currentUrl}`;
+            
+            // Build beautiful email body with all details + the link
+            let body = '';
+            body += `══════════════════════════════════════════════════\n`;
+            body += `           🔐 WEB BOX PENTEST REQUEST 🔐\n`;
+            body += `══════════════════════════════════════════════════\n\n`;
+            body += `📎 SUBMITTED FROM:\n`;
+            body += `   ${currentUrl}\n\n`;
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `🎯 TARGET INFORMATION\n`;
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `   • IP Address / Domain: ${ipDomain || '❌ Not provided'}\n`;
+            body += `   • Subdomain / Subdomain IP: ${subdomain || '❌ Not provided'}\n\n`;
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `📝 SPECIFIC REQUIREMENTS\n`;
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `${specificReq || '⚠️ No specific requirements provided'}\n\n`;
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `⏱️ SUBMISSION TIME\n`;
+            body += `   ${new Date().toLocaleString()}\n\n`;
+            body += `══════════════════════════════════════════════════\n`;
+            body += `Web Box Pentester - Professional Security Assessment\n`;
+            body += `We will respond within 24 hours. Stay secure. 🔒\n`;
+            body += `══════════════════════════════════════════════════`;
+            
+            // Create mailto link and redirect
+            const mailtoLink = `mailto:${recipientEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.location.href = mailtoLink;
+            
+            // Redirect to success page after short delay (to allow mail client to open)
+            setTimeout(() => {
+                window.location.href = 'http://localhost:8080/success.html';
+            }, 800);
+        });
+
+        // Navigation: Home button -> localhost:8080/home.html
+        const homeNavBtn = document.getElementById('homeNavBtn');
+        if (homeNavBtn) {
+            homeNavBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.location.href = 'http://localhost:8080/home.html';
+            });
+        }
+
+        // Contact button -> smooth scroll to contact section
+        const contactNavBtn = document.getElementById('contactNavBtn');
+        if (contactNavBtn) {
+            contactNavBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const contactSection = document.getElementById('contact');
+                if (contactSection) {
+                    contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        }
+
+        // Mobile header hide on scroll (same as previous designs)
+        const header = document.getElementById('mainHeader');
+        let isMobile = window.innerWidth <= 768;
+        let headerHidden = false;
+        
+        function handleMobileScroll() {
+            if (!isMobile) return;
+            if (window.scrollY > 80) {
+                if (!headerHidden) {
+                    header.classList.add('header-hidden');
+                    headerHidden = true;
+                }
+            } else {
+                if (headerHidden) {
+                    header.classList.remove('header-hidden');
+                    headerHidden = false;
+                }
+            }
+        }
+        
+        function initMobileScroll() {
+            isMobile = window.innerWidth <= 768;
+            if (isMobile) {
+                window.addEventListener('scroll', handleMobileScroll);
+                handleMobileScroll();
+            } else {
+                window.removeEventListener('scroll', handleMobileScroll);
+                if (header) header.classList.remove('header-hidden');
+                headerHidden = false;
+            }
+        }
+        
+        window.addEventListener('resize', initMobileScroll);
+        initMobileScroll();
+        
+        // Prevent horizontal scroll
+        document.body.style.overflowX = 'hidden';
+        
+        // Add subtle animation to config container
+        const configContainer = document.querySelector('.config-container');
+        if (configContainer) {
+            configContainer.style.opacity = '0';
+            configContainer.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                configContainer.style.transition = 'all 0.6s ease';
+                configContainer.style.opacity = '1';
+                configContainer.style.transform = 'translateY(0)';
+            }, 100);
+        }
+    </script>
+</body>
+</html>

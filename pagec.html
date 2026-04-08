@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Web Box - Custom Pentest Configurator | Advanced Security Assessment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        html {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        /* 头部样式 */
+        header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #333;
+            width: 100%;
+            transition: transform 0.3s ease;
+        }
+
+        /* 移动端滚动隐藏header */
+        @media (max-width: 768px) {
+            header.header-hidden {
+                transform: translateY(-100%);
+            }
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #fff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a:hover {
+            color: #ffffff;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 20px;
+            }
+            .nav-links a {
+                font-size: 12px;
+            }
+        }
+
+        /* Hero区域 */
+        .hero {
+            min-height: 35vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            top: -200px;
+            right: -200px;
+            animation: float 15s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, 30px); }
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 10;
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+            color: #fff;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #b0b0b0;
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease 0.2s backwards;
+        }
+
+        .back-home {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: transparent;
+            border: 2px solid #ffffff;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .back-home:hover {
+            background-color: #ffffff;
+            color: #0a0a0a;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 配置容器 */
+        .config-container {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 40px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #141414 100%);
+            border: 1px solid #333;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .config-section {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        .config-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .section-label {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Slider 样式 - 滑块按钮改为白色 */
+        .slider-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .slider-wrapper {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            border-radius: 5px;
+            background: #333;
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* 滑块按钮 - 白色 */
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ffffff;
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+            border: none;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ffffff;
+            cursor: pointer;
+            border: none;
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .slider-labels span.active {
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        .selected-value {
+            background: #0a0a0a;
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            font-size: 14px;
+            color: #ffffff;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        /* Radio 样式 - Experience Level (Experienced / Non-Experienced) */
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 10px 20px;
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .radio-option:hover {
+            border-color: #ffffff;
+        }
+
+        .radio-option input {
+            accent-color: #ffffff;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .radio-option label {
+            cursor: pointer;
+            color: #e0e0e0;
+        }
+
+        .radio-option:has(input:checked) {
+            border-color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .radio-option:has(input:checked) label {
+            color: #ffffff;
+        }
+
+        /* Search Volunteer 复选框 - 样式类似 I Agree 按钮 */
+        .volunteer-section {
+            margin-top: 15px;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid #333;
+            display: inline-block;
+            width: auto;
+        }
+
+        .volunteer-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .volunteer-checkbox input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #ffffff;
+        }
+
+        .volunteer-checkbox label {
+            cursor: pointer;
+            color: #cccccc;
+            font-size: 14px;
+        }
+
+        .volunteer-checkbox label:hover {
+            color: #ffffff;
+        }
+
+        /* Textarea 样式 */
+        .specific-textarea {
+            width: 100%;
+            padding: 15px;
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            color: #e0e0e0;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+            transition: all 0.3s;
+        }
+
+        .specific-textarea:focus {
+            outline: none;
+            border-color: #ffffff;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Submit 按钮 */
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: transparent;
+            border: 2px solid #ffffff;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+
+        .submit-btn:hover {
+            background: #ffffff;
+            color: #0a0a0a;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        /* 底部区域 */
+        #contact {
+            background-color: #0a0a0a;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-content p {
+            font-size: 18px;
+            color: #b0b0b0;
+            margin-bottom: 40px;
+        }
+
+        .contact-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border: 2px solid #555;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s;
+            background-size: 24px;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .contact-link.email-icon {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23e0e0e0' viewBox='0 0 24 24'%3E%3Cpath d='M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z'/%3E%3C/svg%3E");
+        }
+        .contact-link.github-icon {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23e0e0e0' viewBox='0 0 24 24'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.49.5.09.68-.21.68-.48 0-.24-.01-.88-.01-1.72-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.33.85 0 1.7.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85 0 1.34-.01 2.42-.01 2.75 0 .27.18.58.69.48C19.13 20.17 22 16.42 22 12c0-5.52-4.48-10-10-10z'/%3E%3C/svg%3E");
+        }
+
+        .contact-link:hover {
+            border-color: #ffffff;
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background-color: transparent;
+            border: 2px solid #ffffff;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .cta-button:hover {
+            background-color: #ffffff;
+            color: #0a0a0a;
+        }
+
+        footer {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+            padding: 30px 20px;
+            text-align: center;
+            border-top: 1px solid #333;
+            color: #888;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+            .config-container {
+                margin: 30px 20px;
+                padding: 25px;
+            }
+            .slider-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .radio-group {
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="mainHeader">
+        <nav>
+            <div class="logo">WEB BOX</div>
+            <ul class="nav-links">
+                <li><a href="#" id="backToHomeNav">Home</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Custom Pentest Configurator</h1>
+            <p>Design your perfect security assessment with precision controls</p>
+            <button class="back-home" id="backToHomeBtn">← Back to Main Page</button>
+        </div>
+    </section>
+
+    <div class="config-container">
+        <!-- 配置选项1: Testing Depth -->
+        <div class="config-section">
+            <div class="section-label">Testing Depth Level</div>
+            <div class="slider-container">
+                <div class="slider-wrapper">
+                    <input type="range" id="depthSlider" class="slider" min="0" max="2" step="1" value="1">
+                    <div class="slider-labels">
+                        <span id="depthBasic">Basic</span>
+                        <span id="depthMedium">Medium</span>
+                        <span id="depthAdvanced">Advanced</span>
+                    </div>
+                </div>
+                <div class="selected-value" id="depthValue">Medium</div>
+            </div>
+        </div>
+
+        <!-- 配置选项2: Test Scope -->
+        <div class="config-section">
+            <div class="section-label">Test Scope</div>
+            <div class="slider-container">
+                <div class="slider-wrapper">
+                    <input type="range" id="scopeSlider" class="slider" min="0" max="3" step="1" value="2">
+                    <div class="slider-labels">
+                        <span id="scopeWebsite">Website only</span>
+                        <span id="scopeNetwork">Network only</span>
+                        <span id="scopeBoth">Website + Network</span>
+                        <span id="scopeAll">All + Employee</span>
+                    </div>
+                </div>
+                <div class="selected-value" id="scopeValue">Website + Network</div>
+            </div>
+        </div>
+
+        <!-- 配置选项3: Testing Phase -->
+        <div class="config-section">
+            <div class="section-label">Testing Phase</div>
+            <div class="slider-container">
+                <div class="slider-wrapper">
+                    <input type="range" id="phaseSlider" class="slider" min="0" max="2" step="1" value="1">
+                    <div class="slider-labels">
+                        <span id="phaseRecon">Only Recon</span>
+                        <span id="phaseExploit">+ Exploit Test</span>
+                        <span id="phasePost">+ Post-Exploit Test</span>
+                    </div>
+                </div>
+                <div class="selected-value" id="phaseValue">+ Exploit Test</div>
+            </div>
+        </div>
+
+        <!-- 配置选项4: Experience Level (只有 Experienced / Non-Experienced) -->
+        <div class="config-section">
+            <div class="section-label">Experience Level</div>
+            <div class="radio-group" id="experienceGroup">
+                <div class="radio-option">
+                    <input type="radio" name="experience" id="expNonExperienced" value="Non-Experienced">
+                    <label for="expNonExperienced">Non-Experienced</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" name="experience" id="expExperienced" value="Experienced" checked>
+                    <label for="expExperienced">Experienced</label>
+                </div>
+            </div>
+            <!-- Search Volunteer 复选框 - 样式类似 I Agree 按钮，独立于上面的选择 -->
+            <div class="volunteer-section">
+                <label class="volunteer-checkbox">
+                    <input type="checkbox" id="volunteerCheckbox">
+                    <label for="volunteerCheckbox">Search Volunteer (if possible)</label>
+                </label>
+            </div>
+        </div>
+
+        <!-- Specific Requirements -->
+        <div class="config-section">
+            <div class="section-label">Write Your Specific Requirements</div>
+            <textarea id="specificRequirements" class="specific-textarea" rows="4" placeholder="Example: Need to test HIPAA compliance, specific IP ranges, API endpoints, mobile app testing, social engineering simulation..."></textarea>
+        </div>
+
+        <!-- Submit 按钮 (Email field removed, but email sending functionality remains) -->
+        <button id="submitConfigBtn" class="submit-btn">SUBMIT CUSTOM CONFIGURATION →</button>
+    </div>
+
+    <!-- 底部联系区域 -->
+    <section id="contact">
+        <h2 class="section-title" style="font-size: 36px; color:#fff; margin-bottom:20px;">Get In Touch</h2>
+        <div class="contact-content">
+            <p>Ready to secure your infrastructure? Contact us for a consultation and let's discuss how we can help protect your organization.</p>
+            <div class="contact-links">
+                <a href="mailto:trenderwell@gmail.com" class="contact-link email-icon" title="Email"></a>
+                <a href="https://github.com/webboxpentester" class="contact-link github-icon" title="GitHub"></a>
+            </div>
+            <button class="cta-button" id="sendMessageBtn">Send Message</button>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Web Box Pentester. All rights reserved. | Security through transparency.</p>
+    </footer>
+
+    <script>
+        // ========== 移动端滚动隐藏header ==========
+        const header = document.getElementById('mainHeader');
+        let isMobile = window.innerWidth <= 768;
+        let headerHidden = false;
+        
+        function handleMobileScroll() {
+            if (!isMobile) return;
+            if (window.scrollY > 80) {
+                if (!headerHidden) {
+                    header.classList.add('header-hidden');
+                    headerHidden = true;
+                }
+            } else {
+                if (headerHidden) {
+                    header.classList.remove('header-hidden');
+                    headerHidden = false;
+                }
+            }
+        }
+        
+        function initMobileScroll() {
+            isMobile = window.innerWidth <= 768;
+            if (isMobile) {
+                window.addEventListener('scroll', handleMobileScroll);
+            } else {
+                window.removeEventListener('scroll', handleMobileScroll);
+                header.classList.remove('header-hidden');
+                headerHidden = false;
+            }
+        }
+        
+        window.addEventListener('resize', initMobileScroll);
+        initMobileScroll();
+        
+        // ========== Sliders 逻辑 ==========
+        const depthSlider = document.getElementById('depthSlider');
+        const depthValue = document.getElementById('depthValue');
+        const depthLabelsMap = {0: 'Basic', 1: 'Medium', 2: 'Advanced'};
+        depthSlider.addEventListener('input', function() {
+            let val = parseInt(this.value);
+            depthValue.textContent = depthLabelsMap[val];
+            document.querySelectorAll('#depthBasic, #depthMedium, #depthAdvanced').forEach((el, idx) => {
+                if (idx === val) el.classList.add('active');
+                else el.classList.remove('active');
+            });
+        });
+        
+        const scopeSlider = document.getElementById('scopeSlider');
+        const scopeValue = document.getElementById('scopeValue');
+        const scopeLabelsMap = {0: 'Website only', 1: 'Network only', 2: 'Website + Network', 3: 'All + Employee'};
+        scopeSlider.addEventListener('input', function() {
+            let val = parseInt(this.value);
+            scopeValue.textContent = scopeLabelsMap[val];
+            document.querySelectorAll('#scopeWebsite, #scopeNetwork, #scopeBoth, #scopeAll').forEach((el, idx) => {
+                if (idx === val) el.classList.add('active');
+                else el.classList.remove('active');
+            });
+        });
+        
+        const phaseSlider = document.getElementById('phaseSlider');
+        const phaseValue = document.getElementById('phaseValue');
+        const phaseLabelsMap = {0: 'Only Recon', 1: '+ Exploit Test', 2: '+ Post-Exploit Test'};
+        phaseSlider.addEventListener('input', function() {
+            let val = parseInt(this.value);
+            phaseValue.textContent = phaseLabelsMap[val];
+            document.querySelectorAll('#phaseRecon, #phaseExploit, #phasePost').forEach((el, idx) => {
+                if (idx === val) el.classList.add('active');
+                else el.classList.remove('active');
+            });
+        });
+        
+        depthSlider.dispatchEvent(new Event('input'));
+        scopeSlider.dispatchEvent(new Event('input'));
+        phaseSlider.dispatchEvent(new Event('input'));
+        
+        function getSelectedExperience() {
+            let selected = document.querySelector('input[name="experience"]:checked');
+            let baseExp = selected ? selected.value : 'Experienced';
+            let isVolunteerChecked = document.getElementById('volunteerCheckbox').checked;
+            if (isVolunteerChecked) {
+                return baseExp + ' + Search Volunteer (if possible)';
+            }
+            return baseExp;
+        }
+        
+        // ========== Submit 提交逻辑 (Email field removed, but email sending works - using a default email) ==========
+        const submitBtn = document.getElementById('submitConfigBtn');
+        
+        submitBtn.addEventListener('click', function() {
+            const depth = depthValue.textContent;
+            const scope = scopeValue.textContent;
+            const phase = phaseValue.textContent;
+            const experience = getSelectedExperience();
+            const specificReq = document.getElementById('specificRequirements').value.trim() || 'No specific requirements provided';
+            
+            // 当前页面URL
+            const currentUrl = window.location.href;
+            
+            // 构建邮件内容 - 使用固定的发送地址 (或者可以让用户输入，但这里去掉了email字段，所以用固定邮箱)
+            const recipientEmail = "trenderwell@gmail.com";
+            const subject = `[Web Box] Custom Pentest Configuration - New Submission`;
+            let body = '';
+            body += `=== CUSTOM PENTEST CONFIGURATION ===\n\n`;
+            body += `* URL: ${currentUrl}\n\n`;
+            body += `--- Selected Options ---\n`;
+            body += `• Testing Depth Level: ${depth}\n`;
+            body += `• Test Scope: ${scope}\n`;
+            body += `• Testing Phase: ${phase}\n`;
+            body += `• Experience Level: ${experience}\n\n`;
+            body += `--- Specific Requirements ---\n${specificReq}\n\n`;
+            body += `--- Submission Time ---\n${new Date().toLocaleString()}\n`;
+            body += `===============================`;
+            
+            // 发送邮件到 trenderwell@gmail.com
+            const mailtoLink = `mailto:${recipientEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.location.href = mailtoLink;
+            
+            // 延迟后跳转到 success.html
+            setTimeout(() => {
+                window.location.href = 'http://localhost:8080/success.html';
+            }, 800);
+        });
+        
+        // ========== 返回首页按钮 ==========
+        const backBtn = document.getElementById('backToHomeBtn');
+        const backNav = document.getElementById('backToHomeNav');
+        function goBackHome() {
+            window.location.href = 'home.html';
+        }
+        if (backBtn) backBtn.addEventListener('click', goBackHome);
+        if (backNav) backNav.addEventListener('click', goBackHome);
+        
+        // Send Message 按钮功能
+        const sendMsgBtn = document.getElementById('sendMessageBtn');
+        if (sendMsgBtn) {
+            sendMsgBtn.addEventListener('click', () => {
+                window.location.href = 'mailto:trenderwell@gmail.com?subject=Pentesting%20Consultation%20Request&body=Hello%20Web%20Box%20Team%2C%0A%0AI%20would%20like%20to%20discuss%20a%20penetration%20testing%20engagement.';
+            });
+        }
+        
+        // 防止横向滚动
+        document.body.style.overflowX = 'hidden';
+    </script>
+</body>
+</html>
