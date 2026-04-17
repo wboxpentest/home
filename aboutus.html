@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>About Us | Web Box Pentester</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        html {
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #333;
+            width: 100%;
+            transition: transform 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            header.header-hidden {
+                transform: translateY(-100%);
+            }
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #fff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a:hover {
+            color: #ffffff;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 20px;
+            }
+            .nav-links a {
+                font-size: 12px;
+            }
+        }
+
+        .page-hero {
+            background: linear-gradient(135deg, #0a0a0a 0%, #151515 100%);
+            padding: 80px 20px 60px;
+            text-align: center;
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        .page-hero h1 {
+            font-size: 56px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .page-hero p {
+            font-size: 20px;
+            color: #cccccc;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .about-container {
+            max-width: 1100px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .section-block {
+            margin-bottom: 70px;
+        }
+
+        .section-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: #ffffff;
+            margin-top: 10px;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #121212 100%);
+            border: 1px solid #333;
+            border-radius: 20px;
+            padding: 30px 25px;
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            border-color: #ffffff;
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(255,255,255,0.05);
+        }
+
+        .card-icon {
+            margin-bottom: 20px;
+        }
+
+        /* 纯图标 - 无彩色emoji，仅SVG */
+        .icon-magnify {
+            display: inline-block;
+            width: 48px;
+            height: 48px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 24 24'%3E%3Cpath d='M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        .icon-email {
+            display: inline-block;
+            width: 48px;
+            height: 48px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 24 24'%3E%3Cpath d='M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        .icon-shield {
+            display: inline-block;
+            width: 48px;
+            height: 48px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 24 24'%3E%3Cpath d='M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        .icon-x {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ff8888' viewBox='0 0 24 24'%3E%3Cpath d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .info-card h3 {
+            font-size: 24px;
+            color: #ffffff;
+            margin-bottom: 15px;
+        }
+
+        .info-card p {
+            color: #c0c0c0;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .never-list {
+            background: #111;
+            border-radius: 24px;
+            padding: 30px;
+            border: 1px solid #333;
+        }
+        .never-item {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: 500;
+            color: #f0f0f0;
+        }
+        .never-item .icon-x {
+            flex-shrink: 0;
+        }
+        .never-item span {
+            color: #ffaaaa;
+        }
+
+        .simple-text {
+            background: rgba(255,255,255,0.03);
+            padding: 30px;
+            border-radius: 24px;
+            border-left: 4px solid #ffffff;
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+        #contact {
+            background-color: #0a0a0a;
+            text-align: center;
+            padding: 80px 20px;
+            border-top: 1px solid #222;
+            scroll-margin-top: 80px;
+        }
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .contact-content p {
+            font-size: 18px;
+            color: #b0b0b0;
+            margin-bottom: 40px;
+        }
+        .contact-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border: 2px solid #555;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s;
+            background-size: 24px;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .contact-link.email-icon {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23e0e0e0' viewBox='0 0 24 24'%3E%3Cpath d='M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z'/%3E%3C/svg%3E");
+        }
+        .contact-link.github-icon {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23e0e0e0' viewBox='0 0 24 24'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.49.5.09.68-.21.68-.48 0-.24-.01-.88-.01-1.72-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.33.85 0 1.7.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85 0 1.34-.01 2.42-.01 2.75 0 .27.18.58.69.48C19.13 20.17 22 16.42 22 12c0-5.52-4.48-10-10-10z'/%3E%3C/svg%3E");
+        }
+        .contact-link:hover {
+            border-color: #ffffff;
+            background-color: rgba(255,255,255,0.1);
+            transform: scale(1.05);
+        }
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background-color: transparent;
+            border: 2px solid #ffffff;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 50px;
+        }
+        .cta-button:hover {
+            background-color: #ffffff;
+            color: #0a0a0a;
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+        footer {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+            padding: 30px 20px;
+            text-align: center;
+            border-top: 1px solid #333;
+            color: #888;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .page-hero h1 { font-size: 40px; }
+            .section-title { font-size: 28px; }
+            .info-card { padding: 20px; }
+            .never-item { font-size: 15px; gap: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <header id="mainHeader">
+        <nav>
+            <div class="logo">WEB BOX</div>
+            <ul class="nav-links">
+                <!-- home button 指向 wboxpentest.eu.org -->
+                <li><a href="https://wboxpentest.eu.org/" id="homeLink">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="page-hero">
+        <h1>About Us</h1>
+        <p>Your Trusted Cybersecurity Partner</p>
+    </section>
+
+    <div class="about-container">
+        <!-- Who We Are -->
+        <div class="section-block">
+            <h2 class="section-title">Who We Are</h2>
+            <div class="simple-text">
+                <p><strong>Web Box Pentester (Wbox Pentest)</strong> is a penetration testing organization specializing in ethical hacking and cybersecurity. We identify website vulnerabilities through passive, lawful scanning and notify the owners — privately, responsibly, and without public exposure.</p>
+                <p style="margin-top: 20px;">Unlike public vulnerability platforms, we do not publish or sell your data. Our goal is simple: help website owners understand their risks and fix them before attackers strike.</p>
+            </div>
+        </div>
+
+        <!-- What We Do (3 cards, no colorful emojis, only clean SVG icons + text) -->
+        <div class="section-block" id="services">
+            <h2 class="section-title">What We Do</h2>
+            <div class="card-grid">
+                <div class="info-card">
+                    <div class="card-icon"><div class="icon-magnify"></div></div>
+                    <h3>Passive Scanning</h3>
+                    <p>We analyze publicly available data without interfering with normal website traffic or user experience. No active exploitation. No damage.</p>
+                </div>
+                <div class="info-card">
+                    <div class="card-icon"><div class="icon-email"></div></div>
+                    <h3>Private Notification</h3>
+                    <p>When a potential vulnerability is detected, we contact the website owner directly with a detailed report — including vulnerability type, location, and potential impact.</p>
+                </div>
+                <div class="info-card">
+                    <div class="card-icon"><div class="icon-shield"></div></div>
+                    <h3>Security Services (Paid)</h3>
+                    <p>If requested, we provide: Full penetration testing, Configuration review, Patch management guidance, Security training.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Our Model -->
+        <div class="section-block">
+            <h2 class="section-title">Our Model</h2>
+            <div class="simple-text">
+                <p>Web Box Pentester primarily operates as a <strong>paid security service provider</strong>.</p>
+                <p style="margin-top: 15px;">(When volunteer resources are occasionally available, limited free notifications may be offered — but this is not guaranteed.)</p>
+                <p style="margin-top: 15px;">We do not act like Shodan or any public scanner. We inform only the website owner — never the public.</p>
+            </div>
+        </div>
+
+        <!-- What We NEVER Do -->
+        <div class="section-block">
+            <h2 class="section-title">What We NEVER Do</h2>
+            <div class="never-list">
+                <div class="never-item"><div class="icon-x"></div> <span>Publicly disclose your vulnerabilities</span></div>
+                <div class="never-item"><div class="icon-x"></div> <span>Damage or disrupt your website</span></div>
+                <div class="never-item"><div class="icon-x"></div> <span>Sell your data or scan results</span></div>
+                <div class="never-item"><div class="icon-x"></div> <span>Publish anything without permission</span></div>
+                <p style="margin-top: 20px; color: #aaa;">We follow CFAA, GDPR, and international cybersecurity laws.</p>
+            </div>
+        </div>
+
+        <!-- Why We Started -->
+        <div class="section-block">
+            <h2 class="section-title">Why We Started</h2>
+            <div class="simple-text">
+                <p>We observed that many website owners remain unaware of security flaws in their systems. Rather than publicly exposing them, we adopted a responsible disclosure policy — combined with paid professional services for those who need deeper help.</p>
+            </div>
+        </div>
+
+        <!-- Our Technology (without Python/Nuclei/GitHub Actions) -->
+        <div class="section-block">
+            <h2 class="section-title">Our Technology</h2>
+            <div class="simple-text">
+                <p>· Open-source and custom-built tools<br>
+                · Passive detection engines only<br>
+                · GitHub: <strong>webboxpentester</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2 class="section-title" style="font-size: 42px;">Get In Touch</h2>
+        <div class="contact-content">
+            <p>Ready to secure your infrastructure? Contact us for a consultation and let's discuss how we can help protect your organization.</p>
+            <div class="contact-links">
+                <a href="mailto:forcontact@wboxpentest.eu.org" class="contact-link email-icon" title="Email"></a>
+                <a href="https://github.com/webboxpentester" class="contact-link github-icon" title="GitHub"></a>
+            </div>
+            <button class="cta-button" id="sendMessageBtn">Send Message</button>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Web Box Pentester. All rights reserved. | Security through transparency.</p>
+    </footer>
+
+    <script>
+        // Mobile header hide on scroll
+        const header = document.getElementById('mainHeader');
+        let isMobile = window.innerWidth <= 768;
+        let headerHidden = false;
+
+        function handleMobileScroll() {
+            if (!isMobile) return;
+            if (window.scrollY > 80) {
+                if (!headerHidden) {
+                    header.classList.add('header-hidden');
+                    headerHidden = true;
+                }
+            } else {
+                if (headerHidden) {
+                    header.classList.remove('header-hidden');
+                    headerHidden = false;
+                }
+            }
+        }
+
+        function initMobileScroll() {
+            isMobile = window.innerWidth <= 768;
+            if (isMobile) {
+                window.addEventListener('scroll', handleMobileScroll);
+                handleMobileScroll();
+            } else {
+                window.removeEventListener('scroll', handleMobileScroll);
+                header.classList.remove('header-hidden');
+                headerHidden = false;
+            }
+        }
+
+        window.addEventListener('resize', initMobileScroll);
+        initMobileScroll();
+
+        // Send message button
+        const sendBtn = document.getElementById('sendMessageBtn');
+        if (sendBtn) {
+            sendBtn.addEventListener('click', () => {
+                window.location.href = 'mailto:forcontact@wboxpentest.eu.org?subject=Pentesting%20Consultation%20Request&body=Hello%20Web%20Box%20Team%2C%0A%0AI%20would%20like%20to%20discuss%20a%20penetration%20testing%20engagement.';
+            });
+        }
+
+        // Smooth scroll for nav links (Services & Contact)
+        document.querySelectorAll('.nav-links a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#services' || targetId === '#contact') {
+                    const target = document.querySelector(targetId);
+                    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+        
+        // 确保home link直接跳转到 https://wboxpentest.eu.org/ (已经写在href中)
+    </script>
+</body>
+</html>
