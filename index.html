@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
     <title>Web Box - Pentesting Team | Cybersecurity Experts</title>
     <style>
         * {
@@ -766,7 +770,7 @@
             if (e.target === modal) closeModal();
         });
         emailTrigger.addEventListener('click', () => {
-            window.location.href = "http://localhost:8080/contact.html";
+            window.location.href = "http://wboxpentest.eu.org/contact.html";
             closeModal();
         });
         
